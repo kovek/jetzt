@@ -42,13 +42,23 @@
       , leftWord = span()
       , rightWord = span()
       , pivotChar = span("sr-pivot")
+
+      , leftWord2 = span()
+      , rightWord2 = span()
+      , pivotChar2 = span("sr-pivot")
+
+      , leftWord3 = span()
+      , rightWord3 = span()
+      , pivotChar3 = span("sr-pivot")
       , word = div("sr-word", [leftWord, pivotChar, rightWord])
-      
+      , word2 = div("sr-word2 sr-word", [leftWord2, pivotChar2, rightWord2])
+      , word3 = div("sr-word3 sr-word", [leftWord3, pivotChar3, rightWord3])
+
       , progressBar = div("sr-progress")
       , message = div("sr-message")
       , reticle = div("sr-reticle")
       , wordBox = div("sr-word-box", [
-          reticle, progressBar, message, word, wpm
+          reticle, progressBar, message, word, word2, word3, wpm
         ])
       , box = div("sr-reader", [
           leftWrap,
@@ -59,7 +69,7 @@
       , wrapper = div("sr-reader-wrapper", [box])
 
       , unlisten;
-    
+
     box.onkeyup = box.onkeypress = function (ev) {
       if(!ev.ctrlKey && !ev.metaKey) {
         ev.stopImmediatePropagation();
@@ -160,7 +170,7 @@
     this.setWPM = function (target_wpm) {
       wpm.innerHTML = target_wpm + "";
     };
-    
+
     this.setFont = function (font) {
       // thanks for pointing that out
       leftWord.style.fontFamily = font;
@@ -220,14 +230,34 @@
     this.started = false;
 
     this.setWord = function (token) {
-      var pivot = calculatePivot(token.replace(/[?.,!:;*-]+$/, ""));
-      leftWord.innerHTML = token.substr(0, pivot);
-      pivotChar.innerHTML = token.substr(pivot, 1);
-      rightWord.innerHTML = token.substr(pivot + 1)
+      var pivot = calculatePivot(token[0].replace(/[?.,!:;*-]+$/, ""));
+      var pivot2 = calculatePivot(token[1].replace(/[?.,!:;*-]+$/, ""));
+      var pivot3 = calculatePivot(token[2].replace(/[?.,!:;*-]+$/, ""));
+
+      leftWord.innerHTML = token[0].substr(0, pivot);
+      pivotChar.innerHTML = token[0].substr(pivot, 1);
+      rightWord.innerHTML = token[0].substr(pivot + 1)
+
+      leftWord2.innerHTML = token[1].substr(0, pivot2);
+      pivotChar2.innerHTML = token[1].substr(pivot2, 1);
+      rightWord2.innerHTML = token[1].substr(pivot2 + 1)
+
+      leftWord3.innerHTML = token[2].substr(0, pivot3);
+      pivotChar3.innerHTML = token[2].substr(pivot3, 1);
+      rightWord3.innerHTML = token[2].substr(pivot3 + 1)
 
       word.offsetWidth;
       var pivotCenter = reticle.offsetLeft + (reticle.offsetWidth / 2);
       word.style.left = (pivotCenter - pivotChar.offsetLeft - (pivotChar.offsetWidth / 2)) + "px";
+
+      word2.offsetWidth;
+      var pivotCenter2 = reticle.offsetLeft + (reticle.offsetWidth / 2);
+      word2.style.left = (pivotCenter2 - pivotChar2.offsetLeft - (pivotChar2.offsetWidth / 2)) + "px";
+
+      debugger;
+      word3.offsetWidth;
+      var pivotCenter3 = reticle.offsetLeft + (reticle.offsetWidth / 3);
+      word3.style.left = (pivotCenter3 - pivotChar3.offsetLeft - (pivotChar3.offsetWidth / 2)) + "px";
     };
 
     this.setWrap = function (left, right) {

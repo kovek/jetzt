@@ -1,7 +1,7 @@
 /*
    Licensed under the Apache License v2.0.
-            
-   A copy of which can be found at the root of this distrubution in 
+
+   A copy of which can be found at the root of this distrubution in
    the file LICENSE-2.0 or at http://www.apache.org/licenses/LICENSE-2.0
 */
 
@@ -21,7 +21,7 @@
 }
 
 .sr-reader {
-  height: 100px;
+  height: 200px;
   display: flex;
   flex-direction: row;
   -webkit-box-shadow: 2px 2px 19px 0px rgba(50, 50, 50, 0.75);
@@ -103,7 +103,7 @@
 .sr-reader .sr-word-box .sr-reticle {
   position: absolute;
   left: 110px;
-  height: 100px;
+  height: 200px;
   width: 10px;
   border-top: 20px solid #CCC;
   border-bottom: 20px solid #CCC;
@@ -131,6 +131,13 @@
   font-size: 50px;
 }
 
+.sr-word2 {
+  margin-top: -50px;
+}
+
+.sr-word3 {
+  margin-top: 50px;
+}
 
 .sr-input {
   position: absolute;
@@ -159,6 +166,10 @@
   font-size: 12px;
   padding: 5px;
   z-index: 100000;
+}
+
+.sr-pivot {
+  color: rgb(224, 16, 0);
 }
 
 .sr-selectmode-info em {

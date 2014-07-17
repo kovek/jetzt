@@ -1,7 +1,7 @@
 /*
    Licensed under the Apache License v2.0.
-            
-   A copy of which can be found at the root of this distrubution in 
+
+   A copy of which can be found at the root of this distrubution in
    the file LICENSE-2.0 or at http://www.apache.org/licenses/LICENSE-2.0
 */
 
@@ -58,15 +58,16 @@
       , runLoop;        // the run loop timeout
 
     function updateReader (instr) {
-      if (typeof instr === "undefined") {
+      if (typeof instr[0] === "undefined") {
         if (index < instructions.length) {
-          instr = instructions[index];
+          instr[0] = instructions[index];
         } else {
-          instr = instructions[instructions.length - 1];
+          instr[0] = instructions[instructions.length - 1];
         }
       }
-      reader.setWord(instr.token);
-      reader.setWrap(instr.leftWrap, instr.rightWrap);
+      toDisplay = [instr[1].token, instr[0].token, instr[2].token];
+      reader.setWord(toDisplay);
+      reader.setWrap(instr[0].leftWrap, instr[0].rightWrap);
       reader.setProgress(100 * (index / instructions.length));
 
       if (index === 1) {
@@ -89,12 +90,12 @@
       reader.setMessage(Math.round(remaining) + "s left");
     }
 
-    
+
     function startedReading () {
       var timestamp = Math.round(new Date().getTime() / 1000);
       reader.started = timestamp;
     }
-    
+
     function finishedReading () {
       var words = instructions.length;
       var timestamp = Math.round(new Date().getTime() / 1000);
@@ -104,13 +105,14 @@
 
     function handleInstruction (instr) {
       updateReader(instr);
-      defer(calculateDelay(instr));
+      defer(calculateDelay(instr[0]));
     }
 
     function defer (time) {
       runLoop = setTimeout(function (){
         if (running && index < instructions.length) {
-          handleInstruction(instructions[index++]);
+          handleInstruction( [ instructions[index], instructions[index+1], instructions[index+2] ] );
+          index += 3;
         } else {
           running = false;
         }
@@ -144,7 +146,7 @@
 
       running ? this.stop() : this.start();
     };
-    
+
     /**
      * Navigate to the start of the sentence, or the start of the previous
      * sentence, if less than 5 words into current sentence.
